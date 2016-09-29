@@ -2,16 +2,30 @@ import sys
 import socket
 import redis
 import yaml
+import logging
 
 """
 Module containing all utility functions for roku remote control
 """
 
 ############# DB/Config Setup ################
-with open('config.yaml', 'r+') as f:
+with open('config/config.yaml', 'r+') as f:
     config = yaml.load(f)
 
 redis_ctx = redis.StrictRedis(db=0)
+
+############### logging #####################
+def log_msg(msg, level='info'):
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)s %(message)s',
+                        datefmt='%m/%d/%Y %I:%M:%S %p',
+                        filename='logs/roku.log')
+    if level == 'info':
+        logging.info(msg)
+    elif level == 'warning':
+        logging.warning(msg)
+    elif level == 'error':
+        logging.error(msg)
 
 ################# Helpers ####################
 def update_config(updates):
